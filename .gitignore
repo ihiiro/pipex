@@ -1,3 +1,5 @@
 infile
 outfile
 pipex
+*.o
+*.a

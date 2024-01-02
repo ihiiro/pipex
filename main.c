@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:12:18 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/02 13:57:13 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/02 15:54:30 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,5 @@ int	main(int argc, char **argv)
 		close(infile_fd);
 		exit(EXIT_FAILURE);
 	}
-	execute_cmd(infile_fd, argv[1], argv[2]);
-	// while (1);
+	pipex(infile_fd, outfile_fd, argv, argc);
 }

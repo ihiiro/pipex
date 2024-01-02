@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:12:18 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/02 11:04:59 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/02 13:57:13 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,14 @@ int	main(int argc, char **argv)
 	if (argc == 2)
 		print_infile(infile_fd);
 	outfile_fd = open(argv[argc - 1], O_RDONLY);
-	if (outfile_fd < 0 && errno == 2)
+	if (outfile_fd < 0 && errno == 2 && argc >= 5)
 		outfile_fd = open(argv[argc - 1], O_CREAT, 0644);
-	if (outfile_fd < 0)
+	if (outfile_fd < 0 && argc >= 5)
 	{
 		ft_printf("pipex: %s: %s", strerror(errno), argv[argc - 1]);
 		close(infile_fd);
 		exit(EXIT_FAILURE);
 	}
-	
+	execute_cmd(infile_fd, argv[1], argv[2]);
+	// while (1);
 }

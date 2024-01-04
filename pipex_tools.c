@@ -6,13 +6,13 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 18:31:44 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/04 16:02:15 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/04 17:29:43 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	*unpack_fds(int *fds, int argc, char **argv, int *errnos) //perms
+int	*unpack_fds(int *fds, int argc, char **argv, int *errnos)
 {
 	if (argc == 1)
 		exit(EXIT_FAILURE);
@@ -20,7 +20,7 @@ int	*unpack_fds(int *fds, int argc, char **argv, int *errnos) //perms
 	errnos[0] = errno;
 	if (argc == 2)
 		return (errnos[1] = -1, fds);
-	fds[1] = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC);
+	fds[1] = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	return (errnos[1] = errno, fds);
 }
 

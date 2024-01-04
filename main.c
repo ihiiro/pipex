@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:12:18 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/02 15:54:30 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/04 13:45:28 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,10 @@
 
 int	main(int argc, char **argv)
 {
-	int	infile_fd;
-	int	outfile_fd;
+	int	fds[2]; //2d array each
+	int	errnos[2];
 
-	if (argc <= 1 || (!ft_strncmp(argv[1], argv[argc - 1], ft_strlen(argv[1])) // infile == outfile
-			&& ft_strlen(argv[1]) == ft_strlen(argv[argc - 1]) && argc != 2))
-		exit(EXIT_SUCCESS);
-	infile_fd = open(argv[1], O_RDONLY);
-	if (infile_fd < 0)
-	{
-		ft_printf("pipex: %s: %s", strerror(errno), argv[1]);
-		exit(EXIT_FAILURE);
-	}
-	if (argc == 2)
-		print_infile(infile_fd);
-	outfile_fd = open(argv[argc - 1], O_RDONLY);
-	if (outfile_fd < 0 && errno == 2 && argc >= 5)
-		outfile_fd = open(argv[argc - 1], O_CREAT, 0644);
-	if (outfile_fd < 0 && argc >= 5)
-	{
-		ft_printf("pipex: %s: %s", strerror(errno), argv[argc - 1]);
-		close(infile_fd);
-		exit(EXIT_FAILURE);
-	}
-	pipex(infile_fd, outfile_fd, argv, argc);
+	eval_fds(unpack_fds(fds, argc, argv, errnos), argc, argv, errnos);
+
+	ft_printf("%d %d", fds[0], fds[1]);
 }

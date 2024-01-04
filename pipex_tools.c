@@ -6,75 +6,34 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 18:31:44 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/02 15:43:48 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/04 13:49:57 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static char	*prefix_with_bin(char *cmdname)
+int	*unpack_fds(int **fds, int argc, char **argv, int *errnos) // perms
 {
-	char	*execve_ready_cmdname;
-
-	execve_ready_cmdname = ft_strjoin("/bin/", cmdname);
-	if (!execve_ready_cmdname)
-	{
-		free(cmdname);
+	if (argc == 1)
 		exit(EXIT_FAILURE);
-	}
-	free(cmdname);
-	return (execve_ready_cmdname);
+	*fds[0] = open(argv[1], O_RDONLY);
+	errnos[0] = errno;
+	*fds[1] = open(argv[argc - 1], O_WRONLY | O_CREAT /*| O_TRUNC */);
+	return (errnos[1] = errno, *fds);
 }
 
-static char	*get_cmdname(char *cmd)
+void	eval_fds(int *fds, int argc, char **argv, int *errnos) // return number of useable fds
 {
-	char	*cmdname;
-
-	cmdname = ft_substr(cmd, 0, ft_strchr(cmd, ' ') - cmd);
-	if (!cmdname)
-		exit(EXIT_FAILURE);
-	cmdname = prefix_with_bin(cmdname);
-	return (cmdname);
-}
-
-void	print_infile(int infile_fd)
-{
-	char	*line;
-
-	line = get_next_line(infile_fd);
-	while (line)
+	if (argc == 2)
+		close(fds[1]);
+	if (fds[0] < 0)
 	{
-		ft_printf("%s", line);
-		free(line);
-		line = get_next_line(infile_fd);
-	}
-	close(infile_fd);
-	exit(EXIT_SUCCESS);
-}
-
-void	execute_cmd(char *filename, char *cmd)
-{
-	pid_t	child_pid;
-	char	*argv[3];
-
-	child_pid = fork();
-	if (child_pid == 0)
-	{
-		argv[0] = get_cmdname(cmd);
-		argv[1] = filename;
-		argv[2] = NULL;
-		if (execve(argv[0], argv, NULL) < 0)
-		{
-			ft_printf("pipex: %s: %s", strerror(errno), argv[0]);
-			free(argv[0]);
-			exit(EXIT_FAILURE);
-		}
-		free(argv[0]);
-		exit(EXIT_SUCCESS);
-	}
-	else if (child_pid < 0)
+		ft_printf("pipex: %s: %s", strerror(errnos[0]), argv[0]);
 		exit(EXIT_FAILURE);
-	else
-		if (waitpid(child_pid, NULL, 0) == child_pid)
-			return;
+	}
+	if (fds[1] < 0)
+	{
+		ft_printf("pipex: %s: %s", strerror(errnos[1]), argv[argc - 1]);
+		exit(EXIT_FAILURE);
+	}
 }

@@ -6,7 +6,7 @@
 #    By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/27 18:57:52 by yel-yaqi          #+#    #+#              #
-#    Updated: 2024/01/02 15:40:01 by yel-yaqi         ###   ########.fr        #
+#    Updated: 2024/01/02 19:05:00 by yel-yaqi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ get_next_line = libft/get_next_line/get_next_line.c libft/get_next_line/get_next
 
 all: pipex
 
-pipex: $(liblibft) $(libprintf) $(get_next_line) main.c pipex.c
+pipex: $(liblibft) $(libprintf) $(get_next_line) main.c pipex.c pipex_tools.c
 	cc $(CFLAGS) main.c pipex_tools.c pipex.c $(get_next_line) $(liblibft) $(libprintf) -o $@
 
 libft/libft.a: libft

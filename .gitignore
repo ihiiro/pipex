@@ -3,3 +3,4 @@ outfile
 pipex
 *.o
 *.a
+.vscode/

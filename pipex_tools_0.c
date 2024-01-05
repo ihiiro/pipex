@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_tools.c                                      :+:      :+:    :+:   */
+/*   pipex_tools_0.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 18:31:44 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/04 18:37:56 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/05 18:49:42 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,16 @@ void	write_fd_to_fd(int fd_read, int fd_write)
 		free(bytes);
 		bytes = get_next_line(fd_read);
 	}
+}
+
+int	file_exists(char *filename)
+{
+	int	fd;
+
+	return (fd = open(filename, O_RDONLY), close(fd), fd);
+}
+
+int	is_file(char *symbol)
+{
+	return (file_exists(symbol) >= 0);
 }

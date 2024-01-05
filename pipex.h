@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:38:46 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/04 18:37:12 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/05 19:01:45 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,8 @@
 int		*unpack_fds(int *fds, int argc, char **argv, int *errnos);
 void	check_fds(int *fds, int argc, char **argv, int *errnos);
 void	write_fd_to_fd(int fd_read, int fd_write);
+int		file_exists(char *filename);
+int		is_file(char *symbol);
+void	pipeline(int *fds, int *errnos, char **argv, int argc);
 
 #endif

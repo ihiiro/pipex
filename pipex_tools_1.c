@@ -6,40 +6,22 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 18:48:45 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/06 12:23:07 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/06 14:23:18 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	pipeline(int *fds, int *errnos, char **argv, int argc)
-{
-	(void)errnos;
-	(void)argv;
-	// int		i;
-	pid_t	child_pid;
-	int		pipee[2];
+// void	pipeline(int *fds, int *errnos, char **argv, int argc)
+// {
+// 	// (void)errnos;
+// 	// (void)argv;
+// 	int	*fd[2];
 
-	if (argc == 2)
-		write_fd_to_fd(fds[0], STDOUT_FILENO);
-	else
-	{
-		pipe(pipee);
-		write_fd_to_fd(fds[0], pipee[1]);
-		child_pid = fork();
-		if (child_pid == 0)
-		{
-			dup2(pipee[0], STDIN_FILENO);
-			char	*argvv[] = {"/usr/bin/grep", "hi", NULL};
-			execve(argvv[0], argvv, NULL);
-			exit(EXIT_SUCCESS);
-		}
-		else
-		{
-			// waitpid(child_pid, NULL, 0);
-		}
-	}
-}
+// 	if (pipe(fds) < 0)
+// 		exit(EXIT_FAILURE);
+	
+// }
 
 int	strictcmp(char *str0, char *str1)
 {
@@ -71,4 +53,37 @@ int	get_heredoc_fd(char *limiter, int *errnos)
 	}
 	free(entry);
 	return (errnos[0] = errno, heredoc_fd);
+}
+
+char	*get_paths(char **env)
+{
+	while (*env)
+	{
+		if (!ft_strncmp(*env, "PATH", 4))
+			return (*env);
+		env++;
+	}
+	return (NULL);
+}
+
+char	*get_next_path(char **paths)
+{
+	int		i;
+	char	*path;
+	size_t	dstsize;
+
+	if (!ft_strncmp(*paths, "PATH=", 5))
+		*paths += 5;
+	i = 0;
+	while (paths[0][i] && paths[0][i] != ':')
+		i++;
+	i++;
+	printf("-%d-", i);
+	dstsize = sizeof(char) * (i + 1);
+	path = (char *)malloc(dstsize);
+	if (!path)
+		exit(EXIT_FAILURE);
+	ft_strlcpy(path, *paths, dstsize);
+	*paths += i;
+	return (path);
 }

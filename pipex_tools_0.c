@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 18:31:44 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/06 11:34:08 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/06 15:51:43 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,34 @@ void	write_fd_to_fd(int fd_read, int fd_write)
 	}
 }
 
-int	file_exists(char *filename)
+int	get_heredoc_fd(char *limiter, int *errnos)
 {
-	int	fd;
+	char	*entry;
+	int		heredoc_fd;
 
-	return (fd = open(filename, O_RDONLY), close(fd), fd);
+	heredoc_fd = open("heredoc", O_CREAT | O_RDWR, 0644);
+	if (heredoc_fd < 0)
+		exit(EXIT_FAILURE);
+	ft_printf("heredoc> ");
+	entry = get_next_line(STDIN_FILENO);
+	while (entry && ft_strncmp(entry, limiter, ft_strlen(limiter)))
+	{
+		ft_putstr_fd(entry, heredoc_fd);
+		free(entry);
+		ft_printf("heredoc> ");
+		entry = get_next_line(STDIN_FILENO);
+	}
+	free(entry);
+	return (errnos[0] = errno, heredoc_fd);
 }
 
-int	is_file(char *symbol)
-{
-	return (file_exists(symbol) >= 0);
-}
+// void	pipeline(int *fds, int *errnos, char **argv, int argc)
+// {
+// 	// (void)errnos;
+// 	// (void)argv;
+// 	int	*fd[2];
+
+// 	if (pipe(fds) < 0)
+// 		exit(EXIT_FAILURE);
+	
+// }

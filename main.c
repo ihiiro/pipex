@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:12:18 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/06 15:52:50 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/06 16:00:28 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,18 @@ int	main(int argc, char **argv, char **env)
 
 	paths = get_paths(env);
 	counter = 0;
+	printf("%s\n", get_next_path(&paths, &counter));
+	printf("%s\n", get_next_path(&paths, &counter));
+	printf("%s\n", get_next_path(&paths, &counter));
+	printf("%s\n", get_next_path(&paths, &counter));
+	printf("%s\n", get_next_path(&paths, &counter));
+	printf("%s\n", get_next_path(&paths, &counter));
+	printf("%s\n", get_next_path(&paths, &counter));
+	printf("%s\n", get_next_path(&paths, &counter));
+	printf("%s\n", get_next_path(&paths, &counter));
+	printf("%s\n", get_next_path(&paths, &counter));
+	printf("%s\n", get_next_path(&paths, &counter));
+	printf("%s\n", get_next_path(&paths, &counter));
 	printf("%s\n", get_next_path(&paths, &counter));
 	check_fds(unpack_fds(fds, argc, argv, errnos), argc, argv, errnos);
 	// pipeline(fds, errnos, argv, argc);

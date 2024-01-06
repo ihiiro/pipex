@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:38:46 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/06 19:25:30 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/06 19:26:06 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,5 @@ int		get_heredoc_fd(char *limiter, int *errnos);
 char	*get_paths(char **argv);
 char	*get_next_path(char **paths, int *path_count);
 void	count_chr(char *str, char chr, int *counter);
-int		count_2d_str_arr(char **arr);
 
 #endif

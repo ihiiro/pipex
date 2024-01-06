@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 18:48:45 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/06 16:03:56 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/06 16:45:59 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,14 @@ void	count_chr(char *str, char chr, int *counter)
 			*counter += 1;
 		str++;
 	}
+}
+
+int	count_2d_str_arr(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while ((*arr)[i])
+		i++;
+	return (i);
 }

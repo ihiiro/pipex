@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 18:48:45 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/06 10:26:43 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/06 12:18:06 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,24 @@ int	strictcmp(char *str0, char *str1)
 		return (0);
 	else
 		return (1);
+}
+
+int	get_heredoc_fd(char *limiter, int *errnos)
+{
+	char	*entry;
+	int		heredoc_fd;
+
+	heredoc_fd = open("heredoc", O_CREAT | O_RDWR, 0644);
+	if (heredoc_fd < 0)
+		exit(EXIT_FAILURE);
+	ft_printf("heredoc> ");
+	entry = get_next_line(STDIN_FILENO);
+	while (entry && ft_strncmp(entry, limiter, ft_strlen(limiter)))
+	{
+		ft_putstr_fd(entry, heredoc_fd);
+		free(entry);
+		ft_printf("heredoc> ");
+		entry = get_next_line(STDIN_FILENO);
+	}
+	return (errnos[0] = errno, heredoc_fd);
 }

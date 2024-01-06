@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:38:46 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/06 10:17:11 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/06 11:12:34 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,6 @@ int		file_exists(char *filename);
 int		is_file(char *symbol);
 void	pipeline(int *fds, int *errnos, char **argv, int argc);
 int		strictcmp(char *str0, char *str1);
+int		get_heredoc_fd(char *limiter, int *errnos);
 
 #endif

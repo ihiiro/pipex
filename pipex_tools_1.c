@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 18:48:45 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/05 20:12:20 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/06 10:26:43 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,15 @@ void	pipeline(int *fds, int *errnos, char **argv, int argc)
 			// waitpid(child_pid, NULL, 0);
 		}
 	}
+}
+
+int	strictcmp(char *str0, char *str1)
+{
+	size_t	str0_len;
+
+	str0_len = ft_strlen(str0);
+	if (!ft_strncmp(str0, str1, str0_len) && ft_strlen(str1) == str0_len)
+		return (0);
+	else
+		return (1);
 }

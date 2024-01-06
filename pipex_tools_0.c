@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 18:31:44 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/05 20:02:05 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/06 10:11:48 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	*unpack_fds(int *fds, int argc, char **argv, int *errnos)
 {
-	if (argc == 1)
+	if (argc == 1 || (argc == 2 && !strictcmp("here_doc", argv[1])))
 		exit(EXIT_FAILURE);
 	fds[0] = open(argv[1], O_RDONLY);
 	errnos[0] = errno;

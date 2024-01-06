@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:12:18 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/05 18:57:19 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/06 10:18:50 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	main(int argc, char **argv)
 	int	errnos[2];
 
 	check_fds(unpack_fds(fds, argc, argv, errnos), argc, argv, errnos);
-	pipeline(fds, errnos, argv, argc);
+	// pipeline(fds, errnos, argv, argc);
 
 	// ft_printf("%d %d", fds[0], fds[1]);
 }

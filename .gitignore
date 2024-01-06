@@ -4,3 +4,4 @@ pipex
 *.o
 *.a
 .vscode/
+heredoc

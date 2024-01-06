@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 18:48:45 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/06 12:18:06 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/06 12:23:07 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,6 @@ int	get_heredoc_fd(char *limiter, int *errnos)
 		ft_printf("heredoc> ");
 		entry = get_next_line(STDIN_FILENO);
 	}
+	free(entry);
 	return (errnos[0] = errno, heredoc_fd);
 }

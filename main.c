@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:12:18 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/06 16:26:56 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/06 19:07:25 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@ int	main(int argc, char **argv, char **env)
 	if (argc < 5 || (argc < 6 && !strictcmp("here_doc", argv[1])))
 		exit(EXIT_FAILURE);
 	check_fds(unpack_fds(fds, argc, argv, errnos), argc, argv, errnos);
-	pipeline(fds, errnos, argv, get_paths(env));
+	if (!strictcmp("here_doc", argv[1]))
+		*argv += 3;
+	else
+		*argv += 2;
+	pipeline(fds, argc, argv, get_paths(env));
 	// while (1);
 }

@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 18:48:45 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/07 17:55:03 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/07 20:17:55 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,6 @@ void	execute_cmd(int fd_read, int fd_write, char **argvv)
 	else
 	{
 		close(fd_write);
-		waitpid(child_pid, NULL, 0);
+		// waitpid(child_pid, NULL, 0);
 	}
 }

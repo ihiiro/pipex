@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:48:03 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/07 18:02:15 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/07 20:19:19 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	pipeline(char **argv, char *paths, int *fds)
 {
 	char	*argvv[3];
 	int		pipe_fds[2];
+	int		read_end;
 	int		i;
 
 	if (pipe(pipe_fds) < 0)
@@ -43,10 +44,11 @@ void	pipeline(char **argv, char *paths, int *fds)
 			execute_cmd(fds[INFILE], pipe_fds[WRITE_END], argvv);
 		else
 		{
-			// if (pipe(pipe_fds) < 0)
-			// 	exit(EXIT_FAILURE);
-			execute_cmd(pipe_fds[READ_END], pipe_fds[WRITE_END], argvv);
+			if (pipe(pipe_fds) < 0)
+				exit(EXIT_FAILURE);
+			execute_cmd(read_end, pipe_fds[WRITE_END], argvv);
 		}
+		read_end = pipe_fds[READ_END];
 		i++;
 	}
 	write_fd_to_fd(pipe_fds[READ_END], fds[OUTFILE]);

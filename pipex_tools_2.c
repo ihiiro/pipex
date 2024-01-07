@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:48:03 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/07 15:48:51 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/07 18:02:15 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,11 @@ int	cmp_to_stdin(char *str, char *stdin_str)
 		return (1);
 }
 
-void	pipeline(int argc, char **argv, char *paths)
+void	pipeline(char **argv, char *paths, int *fds)
 {
 	char	*argvv[3];
-	char	*cmd;
 	int		pipe_fds[2];
 	int		i;
-	int		path_count;
 
 	if (pipe(pipe_fds) < 0)
 		exit(EXIT_FAILURE);
@@ -40,17 +38,18 @@ void	pipeline(int argc, char **argv, char *paths)
 	{
 		if (!argv[i + 1])
 			break ;
-		cmd = first_word(argv[i]);
-		argvv[0] = construct_cmd(paths, cmd);
-		free(cmd);
-		argvv[1] = ft_strchr(argv[i], ' ') + 1;
-		argvv[2] = NULL;
+		unpack_argvv(argvv, paths, argv[i], first_word(argv[i]));
 		if (i == 0)
-			fds[0]
+			execute_cmd(fds[INFILE], pipe_fds[WRITE_END], argvv);
 		else
-			
+		{
+			// if (pipe(pipe_fds) < 0)
+			// 	exit(EXIT_FAILURE);
+			execute_cmd(pipe_fds[READ_END], pipe_fds[WRITE_END], argvv);
+		}
 		i++;
 	}
+	write_fd_to_fd(pipe_fds[READ_END], fds[OUTFILE]);
 }
 
 char	*first_word(char *str)
@@ -65,4 +64,15 @@ char	*first_word(char *str)
 	if (!word)
 		exit(EXIT_FAILURE);
 	return (word);
+}
+
+void	unpack_argvv(char **argvv, char *paths, char *word_list, char *cmd)
+{
+	argvv[0] = construct_cmd(paths, cmd);
+	free(cmd);
+	if (ft_strchr(word_list, ' '))
+		argvv[1] = ft_strchr(word_list, ' ') + 1;
+	else
+		argvv[1] = NULL;
+	argvv[2] = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 18:48:45 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/07 13:45:57 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/07 17:55:03 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ char	*construct_cmd(char *paths, char *cmd)
 	return (NULL);
 }
 
-void	execute_cmd(int fd_read, int fd_write, char **argv)
+void	execute_cmd(int fd_read, int fd_write, char **argvv)
 {
 	pid_t	child_pid;
 
@@ -91,7 +91,7 @@ void	execute_cmd(int fd_read, int fd_write, char **argv)
 			exit(EXIT_FAILURE);
 		if (dup2(fd_write, STDOUT_FILENO) < 0)
 			exit(EXIT_FAILURE);
-		if (execve(argv[0], argv, NULL) < 0)
+		if (execve(argvv[0], argvv, NULL) < 0)
 			exit(EXIT_FAILURE);
 		exit(EXIT_SUCCESS);
 	}
@@ -99,7 +99,7 @@ void	execute_cmd(int fd_read, int fd_write, char **argv)
 	{
 		close(fd_read);
 		close(fd_write);
-		free(argv[0]);
+		free(argvv[0]);
 		exit(EXIT_FAILURE);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 18:31:44 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/07 15:13:18 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/07 17:05:39 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,30 @@
 int	*unpack_fds(int *fds, int argc, char **argv, int *errnos)
 {
 	if (!strictcmp("here_doc", argv[1]))
-		fds[0] = get_heredoc_fd(argv[2], errnos);
+		fds[INFILE] = get_heredoc_fd(argv[2], errnos);
 	else
 	{
-		fds[0] = open(argv[1], O_RDONLY);
-		errnos[0] = errno;
+		fds[INFILE] = open(argv[1], O_RDONLY);
+		errnos[INFILE] = errno;
 	}
-	fds[1] = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	return (errnos[1] = errno, fds);
+	fds[OUTFILE] = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	return (errnos[OUTFILE] = errno, fds);
 }
 
 void	check_fds(int *fds, int argc, char **argv, int *errnos)
 {
-	if (fds[0] < 0)
+	if (fds[INFILE] < 0)
 	{
-		if (fds[1] >= 0)
-			close(fds[1]);
-		ft_printf("pipex: %s: %s", strerror(errnos[0]), argv[1]);
+		if (fds[OUTFILE] >= 0)
+			close(fds[OUTFILE]);
+		ft_printf("pipex: %s: %s", strerror(errnos[INFILE]), argv[1]);
 		exit(EXIT_FAILURE);
 	}
-	if (fds[1] < 0)
+	if (fds[OUTFILE] < 0)
 	{
-		if (fds[0] >= 0)
-			close(fds[0]);
-		ft_printf("pipex: %s: %s", strerror(errnos[1]), argv[argc - 1]);
+		if (fds[INFILE] >= 0)
+			close(fds[INFILE]);
+		ft_printf("pipex: %s: %s", strerror(errnos[OUTFILE]), argv[argc - 1]);
 		exit(EXIT_FAILURE);
 	}
 }
@@ -62,7 +62,7 @@ int	get_heredoc_fd(char *limiter, int *errnos)
 	int		heredoc_fd;
 
 	heredoc_fd = open("heredoc", O_CREAT | O_RDWR, 0644);
-	errnos[0] = errno;
+	errnos[INFILE] = errno;
 	if (heredoc_fd < 0)
 		exit(EXIT_FAILURE);
 	ft_printf("heredoc> ");
@@ -79,7 +79,7 @@ int	get_heredoc_fd(char *limiter, int *errnos)
 	{
 		close(heredoc_fd);
 		heredoc_fd = open("heredoc", O_CREAT | O_RDWR, 0644);
-		errnos[0] = errno;
+		errnos[INFILE] = errno;
 	}
 	return (heredoc_fd);
 }

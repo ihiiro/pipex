@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 18:31:44 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/07 11:24:32 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/07 15:02:47 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	get_heredoc_fd(char *limiter, int *errnos)
 		exit(EXIT_FAILURE);
 	ft_printf("heredoc> ");
 	entry = get_next_line(STDIN_FILENO);
-	while (entry && ft_strncmp(entry, limiter, ft_strlen(limiter)))
+	while (entry && cmp_to_stdin(limiter, entry))
 	{
 		ft_putstr_fd(entry, heredoc_fd);
 		free(entry);

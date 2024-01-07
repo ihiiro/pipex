@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:12:18 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/07 15:04:29 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/07 15:22:39 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,5 @@ int	main(int argc, char **argv, char **env)
 		argv += 3;
 	else
 		argv += 2;
-
-	int	pipe_fds[2];
-	pipe(pipe_fds);
-	char	*argvv[] = {"/bin/cat", "-e", NULL};
-	execute_cmd(fds[0], pipe_fds[WRITE_END], argvv);
-	write_fd_to_fd(pipe_fds[READ_END], 1);
 	// while (1);
 }

@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 18:31:44 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/06 19:24:23 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/07 11:24:32 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,3 +78,13 @@ int	get_heredoc_fd(char *limiter, int *errnos)
 	return (heredoc_fd);
 }
 
+int	strictcmp(char *str0, char *str1)
+{
+	size_t	str0_len;
+
+	str0_len = ft_strlen(str0);
+	if (!ft_strncmp(str0, str1, str0_len) && ft_strlen(str1) == str0_len)
+		return (0);
+	else
+		return (1);
+}

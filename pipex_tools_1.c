@@ -6,22 +6,11 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 18:48:45 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/06 19:24:16 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/07 13:05:42 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-int	strictcmp(char *str0, char *str1)
-{
-	size_t	str0_len;
-
-	str0_len = ft_strlen(str0);
-	if (!ft_strncmp(str0, str1, str0_len) && ft_strlen(str1) == str0_len)
-		return (0);
-	else
-		return (1);
-}
 
 char	*get_paths(char **env)
 {
@@ -69,5 +58,53 @@ void	count_chr(char *str, char chr, int *counter)
 		if (*str == chr)
 			*counter += 1;
 		str++;
+	}
+}
+
+char	*construct_cmd(char *paths, char *cmd)
+{
+	char	*path_to_executable;
+	char	*path;
+	int		path_count;
+
+	path = get_next_path(&paths, &path_count);
+	while (path)
+	{
+		path_to_executable = ft_strjoin(path, cmd);
+		free(path);
+		if (access(path_to_executable, F_OK | X_OK) == 0)
+			return (path_to_executable);
+		free(path_to_executable);
+		path = get_next_path(&paths, &path_count);
+	}
+	return (NULL);
+}
+
+void	execute_cmd(int fd_read, int fd_write, char **argv)
+{
+	pid_t	child_pid;
+
+	child_pid = fork();
+	if (child_pid == 0)
+	{
+		if (dup2(fd_read, STDIN_FILENO) < 0)
+			exit(EXIT_FAILURE);
+		if (dup2(fd_write, STDOUT_FILENO) < 0)
+			exit(EXIT_FAILURE);
+		if (execve(argv[0], argv, NULL) < 0)
+			exit(EXIT_FAILURE);
+		exit(EXIT_SUCCESS);
+	}
+	else if (child_pid < 0)
+	{
+		close(fd_read);
+		close(fd_write);
+		free(argv[0]);
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		close(fd_write);
+		waitpid(child_pid, NULL, 0);
 	}
 }

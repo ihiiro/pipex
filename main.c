@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:12:18 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/06 19:07:25 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/07 13:21:16 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int	main(int argc, char **argv, char **env)
 {
+	(void)env;
 	int		fds[2];
 	int		errnos[2];
 
@@ -21,9 +22,14 @@ int	main(int argc, char **argv, char **env)
 		exit(EXIT_FAILURE);
 	check_fds(unpack_fds(fds, argc, argv, errnos), argc, argv, errnos);
 	if (!strictcmp("here_doc", argv[1]))
-		*argv += 3;
+		argv += 3;
 	else
-		*argv += 2;
-	pipeline(fds, argc, argv, get_paths(env));
+		argv += 2;
+
+	int	pipe_fds[2];
+	pipe(pipe_fds);
+	char	*argvv[] = {"/bin/cat", "-e", NULL};
+	execute_cmd(fds[0], pipe_fds[WRITE_END], argvv);
+	write_fd_to_fd(pipe_fds[READ_END], 1);
 	// while (1);
 }

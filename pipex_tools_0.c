@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 18:31:44 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/07 15:02:47 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/07 15:13:18 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,12 @@ int	get_heredoc_fd(char *limiter, int *errnos)
 		entry = get_next_line(STDIN_FILENO);
 	}
 	free(entry);
+	if (heredoc_fd >= 0)
+	{
+		close(heredoc_fd);
+		heredoc_fd = open("heredoc", O_CREAT | O_RDWR, 0644);
+		errnos[0] = errno;
+	}
 	return (heredoc_fd);
 }
 

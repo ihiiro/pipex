@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:12:18 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/07 19:41:30 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/09 00:08:37 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,6 @@ int	main(int argc, char **argv, char **env)
 	else
 		argv += 2;
 	pipeline(argv, get_paths(env), fds);
+	while (wait(NULL) > 0);
 	// while (1);
 }

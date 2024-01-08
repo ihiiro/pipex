@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 18:48:45 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/07 20:17:55 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/09 00:29:18 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,31 +80,20 @@ char	*construct_cmd(char *paths, char *cmd)
 	return (NULL);
 }
 
-void	execute_cmd(int fd_read, int fd_write, char **argvv)
+void	execute_cmd(int *pipe_fds, char **argvv)
 {
 	pid_t	child_pid;
 
 	child_pid = fork();
 	if (child_pid == 0)
 	{
-		if (dup2(fd_read, STDIN_FILENO) < 0)
-			exit(EXIT_FAILURE);
-		if (dup2(fd_write, STDOUT_FILENO) < 0)
+		close(pipe_fds[READ_END]);
+		if (dup2(pipe_fds[WRITE_END], STDOUT_FILENO) < 0)
 			exit(EXIT_FAILURE);
 		if (execve(argvv[0], argvv, NULL) < 0)
 			exit(EXIT_FAILURE);
 		exit(EXIT_SUCCESS);
 	}
-	else if (child_pid < 0)
-	{
-		close(fd_read);
-		close(fd_write);
-		free(argvv[0]);
-		exit(EXIT_FAILURE);
-	}
 	else
-	{
-		close(fd_write);
-		// waitpid(child_pid, NULL, 0);
-	}
+		close(pipe_fds[WRITE_END]);
 }

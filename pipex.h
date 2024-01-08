@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:38:46 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/07 17:19:39 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/09 00:20:55 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*get_paths(char **env);
 char	*get_next_path(char **paths, int *path_count);
 void	count_chr(char *str, char chr, int *counter);
 char	*construct_cmd(char *paths, char *cmd);
-void	execute_cmd(int fd_read, int fd_write, char **argvv);
+void	execute_cmd(int *pipe_fds, char **argvv);
 int		cmp_to_stdin(char *str, char *stdin_str);
 char	*first_word(char *str);
 void	unpack_argvv(char **argvv, char *paths, char *word_list, char *cmd);

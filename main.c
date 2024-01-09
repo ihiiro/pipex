@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:12:18 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/09 10:34:35 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/09 12:05:09 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	main(int argc, char **argv, char **env)
 	else
 		argv += 2;
 	pipeline(argv, get_paths(env), fds);
+	if (!strictcmp("here_doc", *(argv - 2)))
+		unlink("heredoc");
 	while (wait(NULL) > 0);
-	while (1);
-	// while (1);
 }

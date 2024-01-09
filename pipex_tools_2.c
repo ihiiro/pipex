@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:48:03 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/09 10:36:55 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/09 11:51:54 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,20 @@ void	pipeline(char **argv, char *paths, int *fds)
 	char	*argvv[3];
 	int		pipe_fds[2];
 	int		i;
-
-	pipe(pipe_fds);
 	i = 0;
+
 	while (1)
 	{
 		if (!argv[i + 1])
 			break ;
 		unpack_argvv(argvv, paths, argv[i], first_word(argv[i]));
-		if (i == 0)
-			dup2(fds[INFILE], STDIN_FILENO);
-		else
-			dup2(pipe_fds[READ_END], STDIN_FILENO);
 		pipe(pipe_fds);
 		if (!argv[i + 2])
 			dup2(fds[OUTFILE], pipe_fds[WRITE_END]);
-		execute_cmd(pipe_fds, argvv);
+		execute_cmd(pipe_fds, argvv, fds);
+		close(fds[INFILE]);
+		fds[INFILE] = pipe_fds[READ_END];
+		close(pipe_fds[WRITE_END]);
 		free(argvv[0]);
 		i++;
 	}

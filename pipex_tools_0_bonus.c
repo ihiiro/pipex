@@ -1,22 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_tools_0.c                                    :+:      :+:    :+:   */
+/*   pipex_tools_0_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 18:31:44 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/09 15:19:52 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/09 15:51:03 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipex_bonus.h"
 
 int	*unpack_fds(int *fds, int argc, char **argv, int *errnos)
 {
-	fds[INFILE] = open(argv[1], O_RDONLY);
-	errnos[INFILE] = errno;
-	fds[OUTFILE] = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (!strictcmp("here_doc", argv[1]))
+		fds[INFILE] = get_heredoc_fd(argv[2], errnos);
+	else
+	{
+		fds[INFILE] = open(argv[1], O_RDONLY);
+		errnos[INFILE] = errno;
+	}
+	if (!strictcmp("here_doc", argv[1]))
+		fds[OUTFILE] = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND,
+				0644);
+	else
+		fds[OUTFILE] = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	return (errnos[OUTFILE] = errno, fds);
 }
 
@@ -36,6 +45,34 @@ void	check_fds(int *fds, int argc, char **argv, int *errnos)
 		ft_printf("pipex: %s: %s", strerror(errnos[OUTFILE]), argv[argc - 1]);
 		exit(EXIT_FAILURE);
 	}
+}
+
+int	get_heredoc_fd(char *limiter, int *errnos)
+{
+	char	*entry;
+	int		heredoc_fd;
+
+	heredoc_fd = open("heredoc", O_CREAT | O_RDWR, 0644);
+	errnos[INFILE] = errno;
+	if (heredoc_fd < 0)
+		exit(EXIT_FAILURE);
+	ft_printf("heredoc> ");
+	entry = get_next_line(STDIN_FILENO);
+	while (entry && cmp_to_stdin(limiter, entry))
+	{
+		ft_putstr_fd(entry, heredoc_fd);
+		free(entry);
+		ft_printf("heredoc> ");
+		entry = get_next_line(STDIN_FILENO);
+	}
+	free(entry);
+	if (heredoc_fd >= 0)
+	{
+		close(heredoc_fd);
+		heredoc_fd = open("heredoc", O_CREAT | O_RDWR, 0644);
+		errnos[INFILE] = errno;
+	}
+	return (heredoc_fd);
 }
 
 int	strictcmp(char *str0, char *str1)

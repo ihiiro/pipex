@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_tools_2.c                                    :+:      :+:    :+:   */
+/*   pipex_tools_2_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:48:03 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/09 15:54:27 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/09 16:11:23 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipex_bonus.h"
 
 void	pipeline(char **argv, char *paths, int *fds)
 {
@@ -34,6 +34,19 @@ void	pipeline(char **argv, char *paths, int *fds)
 		free(argvv[0]);
 		i++;
 	}
+}
+
+int	cmp_to_stdin(char *str, char *stdin_str)
+{
+	size_t	str_len;
+	size_t	stdin_str_len;
+
+	str_len = ft_strlen(str);
+	stdin_str_len = ft_strlen(stdin_str);
+	if (!ft_strncmp(str, stdin_str, str_len) && stdin_str_len == str_len + 1)
+		return (0);
+	else
+		return (1);
 }
 
 void	unpack_argvv(char **argvv, char *paths, char *word_list, char *cmd)

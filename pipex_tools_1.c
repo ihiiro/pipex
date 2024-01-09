@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 18:48:45 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/09 00:29:18 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/09 10:24:31 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,12 +87,8 @@ void	execute_cmd(int *pipe_fds, char **argvv)
 	child_pid = fork();
 	if (child_pid == 0)
 	{
-		close(pipe_fds[READ_END]);
-		if (dup2(pipe_fds[WRITE_END], STDOUT_FILENO) < 0)
-			exit(EXIT_FAILURE);
-		if (execve(argvv[0], argvv, NULL) < 0)
-			exit(EXIT_FAILURE);
-		exit(EXIT_SUCCESS);
+		dup2(pipe_fds[WRITE_END], STDOUT_FILENO);
+		execve(argvv[0], argvv, NULL);
 	}
 	else
 		close(pipe_fds[WRITE_END]);

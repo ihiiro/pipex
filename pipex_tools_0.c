@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 18:31:44 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/07 17:05:39 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/09 10:27:46 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,6 @@ void	check_fds(int *fds, int argc, char **argv, int *errnos)
 			close(fds[INFILE]);
 		ft_printf("pipex: %s: %s", strerror(errnos[OUTFILE]), argv[argc - 1]);
 		exit(EXIT_FAILURE);
-	}
-}
-
-void	write_fd_to_fd(int fd_read, int fd_write)
-{
-	char	*bytes;
-
-	bytes = get_next_line(fd_read);
-	while (bytes)
-	{
-		ft_putstr_fd(bytes, fd_write);
-		free(bytes);
-		bytes = get_next_line(fd_read);
 	}
 }
 
@@ -93,4 +80,18 @@ int	strictcmp(char *str0, char *str1)
 		return (0);
 	else
 		return (1);
+}
+
+char	*first_word(char *str)
+{
+	char	*word;
+	int		i;
+
+	i = 0;
+	while (str[i] != ' ')
+		i++;
+	word = ft_substr(str, 0, i);
+	if (!word)
+		exit(EXIT_FAILURE);
+	return (word);
 }

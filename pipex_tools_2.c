@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:48:03 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/09 00:25:31 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/09 10:27:40 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,7 @@ void	pipeline(char **argv, char *paths, int *fds)
 	int		pipe_fds[2];
 	int		i;
 
-	if (pipe(pipe_fds) < 0)
-		exit(EXIT_FAILURE);
+	pipe(pipe_fds);
 	i = 0;
 	while (1)
 	{
@@ -43,26 +42,12 @@ void	pipeline(char **argv, char *paths, int *fds)
 			dup2(fds[INFILE], STDIN_FILENO);
 		else
 			dup2(pipe_fds[READ_END], STDIN_FILENO);
-		if (pipe(pipe_fds) < 0)
-				exit(EXIT_FAILURE);
+		pipe(pipe_fds);
+		if (!argv[i + 2])
+			dup2(fds[OUTFILE], pipe_fds[WRITE_END]);
 		execute_cmd(pipe_fds, argvv);
 		i++;
 	}
-	write_fd_to_fd(pipe_fds[READ_END], fds[OUTFILE]);
-}
-
-char	*first_word(char *str)
-{
-	char	*word;
-	int		i;
-
-	i = 0;
-	while (str[i] != ' ')
-		i++;
-	word = ft_substr(str, 0, i);
-	if (!word)
-		exit(EXIT_FAILURE);
-	return (word);
 }
 
 void	unpack_argvv(char **argvv, char *paths, char *word_list, char *cmd)

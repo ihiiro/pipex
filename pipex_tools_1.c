@@ -6,11 +6,25 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 18:48:45 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/09 10:24:31 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/09 10:31:49 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	execute_cmd(int *pipe_fds, char **argvv)
+{
+	pid_t	child_pid;
+
+	child_pid = fork();
+	if (child_pid == 0)
+	{
+		dup2(pipe_fds[WRITE_END], STDOUT_FILENO);
+		execve(argvv[0], argvv, NULL);
+	}
+	else
+		close(pipe_fds[WRITE_END]);
+}
 
 char	*get_paths(char **env)
 {
@@ -78,18 +92,4 @@ char	*construct_cmd(char *paths, char *cmd)
 		path = get_next_path(&paths, &path_count);
 	}
 	return (NULL);
-}
-
-void	execute_cmd(int *pipe_fds, char **argvv)
-{
-	pid_t	child_pid;
-
-	child_pid = fork();
-	if (child_pid == 0)
-	{
-		dup2(pipe_fds[WRITE_END], STDOUT_FILENO);
-		execve(argvv[0], argvv, NULL);
-	}
-	else
-		close(pipe_fds[WRITE_END]);
 }

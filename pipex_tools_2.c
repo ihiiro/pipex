@@ -6,24 +6,11 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:48:03 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/09 10:27:40 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/09 10:36:55 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-int	cmp_to_stdin(char *str, char *stdin_str)
-{
-	size_t	str_len;
-	size_t	stdin_str_len;
-
-	str_len = ft_strlen(str);
-	stdin_str_len = ft_strlen(stdin_str);
-	if (!ft_strncmp(str, stdin_str, str_len) && stdin_str_len == str_len + 1)
-		return (0);
-	else
-		return (1);
-}
 
 void	pipeline(char **argv, char *paths, int *fds)
 {
@@ -46,8 +33,22 @@ void	pipeline(char **argv, char *paths, int *fds)
 		if (!argv[i + 2])
 			dup2(fds[OUTFILE], pipe_fds[WRITE_END]);
 		execute_cmd(pipe_fds, argvv);
+		free(argvv[0]);
 		i++;
 	}
+}
+
+int	cmp_to_stdin(char *str, char *stdin_str)
+{
+	size_t	str_len;
+	size_t	stdin_str_len;
+
+	str_len = ft_strlen(str);
+	stdin_str_len = ft_strlen(stdin_str);
+	if (!ft_strncmp(str, stdin_str, str_len) && stdin_str_len == str_len + 1)
+		return (0);
+	else
+		return (1);
 }
 
 void	unpack_argvv(char **argvv, char *paths, char *word_list, char *cmd)

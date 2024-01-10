@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 18:31:44 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2024/01/09 15:19:52 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2024/01/10 20:05:03 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	*first_word(char *str)
 	int		i;
 
 	i = 0;
-	while (str[i] != ' ')
+	while (str[i] && str[i] != ' ')
 		i++;
 	word = ft_substr(str, 0, i);
 	if (!word)
